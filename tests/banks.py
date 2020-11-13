@@ -100,6 +100,28 @@ def test_success_fetch_validators(requests_mock):
     assert response == result
 
 
+def test_success_post_invalid_blocks(requests_mock):
+    result = {
+        "id": "2bcd53c5-19f9-4226-ab04-3dfb17c3a1fe",
+        "created_date": "2020-07-11T18:44:16.518695Z",
+        "modified_date": "2020-07-11T18:44:16.518719Z",
+        "block_identifier": "65ae26192dfb9ec41f88c6d582b374a9b42ab58833e1612452d7a8f685dcd4d5",
+        "block": "3ff4ebb0-2b3d-429b-ba90-08133fcdee4e",
+        "confirmation_validator": "fcd2dce8-9e4f-4bf1-8dac-cdbaf64e5ce8",
+        "primary_validator": "51461a75-dd8d-4133-81f4-543a3b054149"
+    }
+
+    requests_mock.post(
+        "http://10.2.3.4:80/invalid_blocks",
+        json=result,
+    )
+
+    bank = Bank(address="10.2.3.4")
+    response = bank.post_invalid_blocks(message=)
+
+    assert response == result
+
+
 def test_success_patch_account(requests_mock):
     result = {
         "id": "64426fc5-b3ac-42fb-b75b-d5ccfcdc6872",
@@ -108,6 +130,7 @@ def test_success_patch_account(requests_mock):
         "account_number": "0cdd4ba04456ca169baca3d66eace869520c62fe84421329",
         "trust": "99.98"
     }
+
     requests_mock.patch(
         "http://10.2.3.4:80/accounts/0cdd4ba04456ca169baca3d66eace869520c62",
         json=result,
